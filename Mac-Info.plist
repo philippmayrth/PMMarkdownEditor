@@ -5,23 +5,23 @@
 	<key>BuildMachineOSBuild</key>
 	<string>16G1114</string>
 	<key>CFBundleDisplayName</key>
-	<string>Electron</string>
+	<string>Markdown Editor</string>
 	<key>CFBundleExecutable</key>
 	<string>Electron</string>
 	<key>CFBundleIconFile</key>
 	<string>electron.icns</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.github.electron</string>
+	<string>de.philippmayr.markdowneditor</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>Electron</string>
+	<string>Markdown Editor</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.8.2</string>
+	<string>1.0.0</string>
 	<key>CFBundleVersion</key>
-	<string>1.8.2</string>
+	<string>1.0.0</string>
 	<key>DTSDKBuild</key>
 	<string>14D125</string>
 	<key>DTSDKName</key>
@@ -42,13 +42,13 @@
 	<string>AtomApplication</string>
 	<key>NSSupportsAutomaticGraphicsSwitching</key>
 	<true/>
-    <key>CFBundleDocumentTypes</key>
-    <array>
-        <dict>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
 			<key>CFBundleTypeExtensions</key>
 			<array>
 				<string>md</string>
-                <string>markdown</string>
+				<string>markdown</string>
 			</array>
 			<key>CFBundleTypeIconFile</key>
 			<string>File.icns</string>
@@ -59,6 +59,6 @@
 			<key>LSHandlerRank</key>
 			<string>Alternate</string>
 		</dict>
-    </array>
+	</array>
 </dict>
 </plist>
