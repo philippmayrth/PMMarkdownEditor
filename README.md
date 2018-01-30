@@ -11,11 +11,10 @@ New marketing idea: This app will be aviable in two versions on the Mac App Stor
 * [x] Save Open file in UI (multiple Files? / Project)
 * [x] Register .md filetype
 * [x] Drag file / folder on app icon and open
-* [ ] In AppMenu -> View -> Close Window: Ask if file should be saved
-* [ ] In AppMenu -> Save not working if file path not yet known
-* [ ] Fix AppMenu -> file -> Save (only save as is currently working)
+* [x] In AppMenu -> View -> Close Window: Ask if file should be saved
+* [x] In AppMenu -> Save not working if file path not yet known
+* [x] Fix AppMenu -> file -> Save (only save as is currently working)
 * [ ] Change Version to 1.0.0
-* [ ] Remove keys patched by the md editor so the appmenu keys work
 * [ ] Put together a License file with all the licenses of the projects being used
 * [ ] Update app and file icon
 * [ ] Create iTunes Connect entry
@@ -29,6 +28,7 @@ New marketing idea: This app will be aviable in two versions on the Mac App Stor
 
 ### Second version
 
+* [ ] Remove keys patched by the md editor so the appmenu keys work
 * [ ] Cheatsheet (link to website?)
 * [ ] Inclusive tabs / Sidebar?
 * [ ] Theme

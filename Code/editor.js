@@ -1,7 +1,8 @@
-const ipc = require('electron').ipcRenderer
+const ipc = require('electron').ipcRenderer;
+const {remote, dialog} = require('electron');
 const fs = require("fs");
 
-var currentOpenFilePath = false;
+var currentOpenFilePathString = false;
 
 
 // initialise the markdown editor
@@ -12,36 +13,36 @@ var editor = new tui.Editor({
     height: '100%'
 });
 
-require('electron').ipcRenderer.on('open_file_at_path', function(event, message) {
+ipc.on('open_file_at_path', function(event, message) {
     var pathString = message;
     console.log("Opening file from path: "+pathString);
     console.log("my object: %o", pathString);
     helper_file_open(pathString)
 });
 
-require('electron').ipcRenderer.on('appmenu', function(event, message) {
+ipc.on('action', function(event, message) {
     console.log("UI incomming IPC: "+message);
 
     switch(message) {
-        case "appmenu.file.new.click":
-            alert("User clicked new in the app menu");
-            break;
-
-        case "appmenu.file.open.click":
+        case "file.open":
             appmenu_file_open();
             break;
         
-        case "appmenu.file.open.save":
+        case "file.open":
             appmenu_file_save();
             break;
 
-        case "appmenu.file.open.save_as":
+        case "file.open.save_as":
             appmenu_file_save_as();
             break;
 
         default:
             break;
     }
+});
+
+ipc.on('window', function(event, message) {
+    alert("window will be closed");
 });
 
 function helper_file_open(pathString) {
@@ -60,6 +61,7 @@ function appmenu_file_open() {
 
 function appmenu_helper_save_file_at(pathString) {
     console.log('Saving file at: '+pathString);
+    currentOpenFilePathString = pathString;
     var data = editor.getMarkdown();
     fs.writeFileSync(pathString, data);
 }
@@ -83,3 +85,29 @@ function appmenu_file_save() {
     }
 }
 
+window.onbeforeunload = function(event) {
+    event.preventDefault();
+
+    if (editor.getMarkdown().toString().trim().length === 0) {
+        // nothing to save - close window
+        return undefined;
+    }
+
+    var options = {
+        type: 'question',
+        title: 'Save file', // not shown on macOS
+        message: "Do you want to save this file?",
+        detail: "Your changes to the file will be lost if you don't save them.",
+        buttons: ['Yes', 'No']
+    };
+
+    var choice = remote.dialog.showMessageBox(remote.getCurrentWindow(), options);
+
+    if (choice === 1) {
+        return undefined; // return undefined to close the window return anything else to keep open
+    }
+    else {
+        appmenu_file_save();
+        return true; // return true to keep window open
+    }
+}
