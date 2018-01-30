@@ -45,6 +45,13 @@ def buildMacApp():
     os.system("iconutil -c icns Artwork/AppIcon.iconset")
     shutil.copy("Artwork/AppIcon.icns", os.path.join(buildDir, "Electron.app", "Contents", "Resources", "electron.icns"))
 
+    # copy over the plist for the app
+    shutil.copy("Mac-Info.plist", os.path.join(buildDir, "Electron.app", "Contents", "Info.plist"))
+
+    # Copy over the file icon
+    os.system("iconutil -c icns Artwork/File.iconset")
+    shutil.copy("Artwork/File.icns", os.path.join(buildDir, "Electron.app", "Contents", "Resources", "File.icns"))
+
     # Rename the App
     pathAppContents = os.path.join(buildDir, "Electron.app", "Contents")
     shutil.move(os.path.join(pathAppContents, "MacOS", "Electron"), os.path.join(pathAppContents, "MacOS", "Electron"))
@@ -60,7 +67,8 @@ def buildMacApp():
 
     # TODO: Sign app for mac app store.
     # This will sign the app for distribution outside of the Mac App Store
-    os.system('electron-osx-sign "$(pwd)/Build/'+finalAppName+'.app" --platform=darwin --type=distribution')
+    #os.system('electron-osx-sign "$(pwd)/Build/'+finalAppName+'.app" --platform=darwin --type=development')
+    os.system('electron-osx-sign "$(pwd)/Build/'+finalAppName+'.app" --platform=mas --type=development --entitlements=$(pwd)/entitlements.mas.plist')
 
 
 if __name__ == "__main__":

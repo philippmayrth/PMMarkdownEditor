@@ -1,0 +1,27 @@
+{
+  "name": "plantuml-encoder",
+  "main": "dist/plantuml-encoder.js",
+  "homepage": "https://github.com/markushedvall/plantuml-encoder",
+  "authors": [
+    "Markus Hedvall <mackanhedvall@gmail.com>"
+  ],
+  "description": "PlantUML encoder, works in browser & node.js",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "lib",
+    "index.js"
+  ],
+  "_release": "156729063b",
+  "_resolution": {
+    "type": "commit",
+    "commit": "156729063bfa62da6fa5f577627ebab57ae98c95"
+  },
+  "_source": "https://github.com/kyuwoo-choi/plantuml-encoder.git",
+  "_target": "156729063bfa62da6fa5f577627ebab57ae98c95",
+  "_originalSource": "kyuwoo-choi/plantuml-encoder"
+}

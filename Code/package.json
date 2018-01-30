@@ -1,5 +1,8 @@
 {
-    "name":    "Markdown Editor",
+    "name": "Markdown Editor",
     "version": "1.0.0",
-    "main":    "main.js"
+    "main": "main.js",
+    "dependencies": {
+        "tui-editor": "^1.0.1"
+    }
 }

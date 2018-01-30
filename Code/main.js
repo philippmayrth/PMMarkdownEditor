@@ -1,38 +1,45 @@
-const {app, BrowserWindow} = require('electron')
+const {app, Menu} = require('electron')
 const path = require('path')
 const url = require('url')
+const WindowManager = require('./WindowManager');
 
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
-let win
+var sharedWindowManager = new WindowManager();
 
-function createWindow () {
-  // Create the browser window.
-  win = new BrowserWindow({width: 800, height: 600})
+let appIsReady = false;
+let openFileAtPathWhenReady = null;
 
-  // and load the index.html of the app.
-  win.loadURL(url.format({
-    pathname: path.join(__dirname, 'index.html'),
-    protocol: 'file:',
-    slashes: true
-  }))
-
-  // Open the DevTools.
-  win.webContents.openDevTools()
-
-  // Emitted when the window is closed.
-  win.on('closed', () => {
-    // Dereference the window object, usually you would store windows
-    // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
-    win = null
-  })
+function createStartupWindow() {
+  sharedWindowManager.createWindow();
 }
+
+app.on('open-file', function(event, path) {
+  event.preventDefault();
+  console.log(path);
+
+  if (appIsReady) {
+    sharedWindowManager.createWindow(path);
+  }
+  else {
+    // app not yet ready
+    openFileAtPathWhenReady = path;
+  }
+})
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', createWindow)
+app.on('ready', function() {
+  appIsReady = true;
+
+  if (openFileAtPathWhenReady == null) {
+    // open default startup window
+    createStartupWindow();
+  }
+  else {
+    // open a window with the file the user wants to open
+    sharedWindowManager.createWindow(openFileAtPathWhenReady);
+  }
+});
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
@@ -46,10 +53,42 @@ app.on('window-all-closed', () => {
 app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
-  if (win === null) {
-    createWindow()
+  if (sharedWindowManager.countOpenWindows() == 0) {
+    sharedWindowManager.createWindow();
   }
 })
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+
+const ipc = require('electron').ipcMain
+const dialog = require('electron').dialog
+
+var fileDialogFilters = {
+  filters: [
+    { name: 'Markdown', extensions: ['md', 'markdown', 'mdown', 'mkdn', 'mkd', 'mdwn', 'mkd', 'txt', 'text'] },
+  ]
+};
+
+ipc.on('open-file-dialog', function (event) {
+  dialog.showOpenDialog({
+    fileDialogFilters,
+    properties: ['openFile']
+  }, function (files) {
+    if (files) event.sender.send('selected-directory', files)
+  })
+})
+
+ipc.on('save-dialog', function (event) {
+  const options = {
+    fileDialogFilters
+  }
+  dialog.showSaveDialog(options, function (filename) {
+    event.sender.send('saved-file', filename)
+  })
+})
+
+ipc.on('appmenu.file.new.click', function(event, message) {
+  console.log("icp new file open in main process");
+});
+
