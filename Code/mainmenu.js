@@ -18,22 +18,22 @@ const template = [
       {
           label: 'Open',
           //accelerator: "CmdOrCtrl+O",
-          click (item, focusedWindow) { 
-            focusedWindow.webContents.send('appmenu', 'file.open');
+          click (item, focusedWindow) {
+            focusedWindow.webContents.send('action', 'file.open');
           }
         },
       {
           label: 'Save',
           //accelerator: "CmdOrCtrl+S",
           click (item, focusedWindow) { 
-            focusedWindow.webContents.send('appmenu', 'file.open.save');
+            focusedWindow.webContents.send('action', 'file.save');
           }
         },
       {
           label: 'Save As',
           //accelerator: "CmdOrCtrl+Shift+S",
           click (item, focusedWindow) { 
-            focusedWindow.webContents.send('appmenu', 'file.open.save_as');
+            focusedWindow.webContents.send('action', 'file.open.save_as');
           }
         },
     ]

@@ -28,7 +28,7 @@ ipc.on('action', function(event, message) {
             appmenu_file_open();
             break;
         
-        case "file.open":
+        case "file.save":
             appmenu_file_save();
             break;
 
