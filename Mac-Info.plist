@@ -49,6 +49,12 @@
 			<array>
 				<string>md</string>
 				<string>markdown</string>
+				<string>mdown</string>
+				<string>mkdn</string>
+				<string>mkd</string>
+				<string>mdwn</string>
+				<string>mkd</string>
+				<string>pmmd</string>
 			</array>
 			<key>CFBundleTypeIconFile</key>
 			<string>File.icns</string>

@@ -14,10 +14,11 @@ New marketing idea: This app will be aviable in two versions on the Mac App Stor
 * [x] In AppMenu -> View -> Close Window: Ask if file should be saved
 * [x] In AppMenu -> Save not working if file path not yet known
 * [x] Fix AppMenu -> file -> Save (only save as is currently working)
-* [ ] Change Version to 1.0.0
+* [x] Change Version to 1.0.0
+* [ ] Links in WYSIWYG are fucking up the UI (trying to load a website and failing leafing the window white)
 * [ ] Put together a License file with all the licenses of the projects being used
-* [ ] Update app and file icon
-* [ ] Create iTunes Connect entry
+* [x] Update app and file icon
+* [x] Create iTunes Connect entry
 
 ### In-App Purchase and in Full Version
 
@@ -28,6 +29,8 @@ New marketing idea: This app will be aviable in two versions on the Mac App Stor
 
 ### Second version
 
+* [ ] Chart code block
+* [ ] UML code block
 * [ ] Remove keys patched by the md editor so the appmenu keys work
 * [ ] Cheatsheet (link to website?)
 * [ ] Inclusive tabs / Sidebar?

@@ -66,7 +66,7 @@ const dialog = require('electron').dialog
 
 var fileDialogFilters = {
   filters: [
-    { name: 'Markdown', extensions: ['md', 'markdown', 'mdown', 'mkdn', 'mkd', 'mdwn', 'mkd', 'txt', 'text'] },
+    { name: 'Markdown', extensions: ['md', 'markdown', 'mdown', 'mkdn', 'mkd', 'mdwn', 'mkd', 'pmmd', 'txt', 'text'] },
   ]
 };
 
