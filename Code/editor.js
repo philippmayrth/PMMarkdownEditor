@@ -32,7 +32,7 @@ ipc.on('action', function(event, message) {
             appmenu_file_save();
             break;
 
-        case "file.open.save_as":
+        case "file.save_as":
             appmenu_file_save_as();
             break;
 

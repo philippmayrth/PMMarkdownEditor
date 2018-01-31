@@ -33,7 +33,7 @@ const template = [
           label: 'Save As',
           //accelerator: "CmdOrCtrl+Shift+S",
           click (item, focusedWindow) { 
-            focusedWindow.webContents.send('action', 'file.open.save_as');
+            focusedWindow.webContents.send('action', 'file.save_as');
           }
         },
     ]
