@@ -3,7 +3,8 @@ const {remote, dialog} = require('electron');
 const fs = require("fs");
 
 var currentWindowIdentifier = null; // the window id of the widnow this renderer is shown in
-var currentOpenFilePathString = false;
+var currentOpenFilePathString = null;
+var _isOpeningInNewWindow = false;
 
 // initialise the markdown editor
 var editor = new tui.Editor({
@@ -32,9 +33,15 @@ var shell = require('electron').shell;
 // End
 
 ipc.on('open_file_at_path', function(event, message) {
-    var pathString = message;
-    console.log("Opening file from path: "+pathString);
-    helper_file_open(pathString)
+    var userWorkedHere = didUserWorkHere();
+    if (!userWorkedHere) {
+        var pathString = message;
+        console.log("Opening file from path: "+pathString);
+        helper_file_open(pathString)
+    }
+    else {
+        alert("user already worked here");
+    }
 });
 
 ipc.on('action', function(event, message) {
@@ -42,7 +49,7 @@ ipc.on('action', function(event, message) {
 
     switch(message) {
         case "file.open":
-            appmenu_file_open();
+            handle_action_file_open();
             break;
         
         case "file.save":
@@ -97,11 +104,35 @@ function handle_user_confirmed_save_before_close() {
 }
 
 function should_show_close_confirmation() {
-    if (editor.getMarkdown().toString().trim().length === 0) {
+    var userWorkedHere = didUserWorkHere();
+    if (!userWorkedHere) {
         // nothing to save - close window
         return false;
     }
     return true;
+}
+
+function didUserWorkHere() {
+    // returns true if the user worked alredy and some changes might be unsaved otherwise returnes false
+    return editor.getMarkdown().toString().trim().length !== 0;
+}
+
+function handle_action_file_open() {
+    // open file if user did not work in this window otherwise open new window (tell main process)
+    var userWorkedHere = didUserWorkHere();
+    if (userWorkedHere) {
+        // tell main process to open new window with the path
+        _isOpeningInNewWindow = true;
+        ipc.send('open-file-dialog');
+        ipc.on('selected-directory', function (event, path) {
+            _isOpeningInNewWindow = false;
+            ipc.send("action.file.open.inNewWindow", `${path}`)
+        })
+    }
+    else {
+        // open file in this editor window
+        appmenu_file_open();
+    }
 }
 
 function helper_file_open(pathString) {
@@ -114,7 +145,9 @@ function appmenu_file_open() {
     ipc.send('open-file-dialog')
 
     ipc.on('selected-directory', function (event, path) {
-        helper_file_open(`${path}`)
+        if (!_isOpeningInNewWindow) {
+            helper_file_open(`${path}`)
+        }
     })
 }
 

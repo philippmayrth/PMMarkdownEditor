@@ -96,11 +96,10 @@ ipc.on('save-dialog', function (event) {
   })
 })
 
-ipc.on('appmenu.file.new.click', function(event, message) {
-  console.log("icp new file open in main process");
+ipc.on('action.file.open.inNewWindow', function(event, message) {
+  var path = message;
+  sharedWindowManager.createWindow(path);
 });
-
-
 
 ipc.on('close-window-with-confirm', function(event, message) {
   var widnowId = message;
