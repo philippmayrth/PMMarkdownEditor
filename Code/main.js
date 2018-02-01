@@ -88,6 +88,7 @@ ipc.on('open-file-dialog', function (event) {
 
 ipc.on('save-dialog', function (event) {
   const options = {
+    defaultPath: "Unnamed.md",
     fileDialogFilters
   }
   dialog.showSaveDialog(options, function (filename) {

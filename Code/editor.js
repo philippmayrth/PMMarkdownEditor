@@ -33,7 +33,6 @@ var shell = require('electron').shell;
 ipc.on('open_file_at_path', function(event, message) {
     var pathString = message;
     console.log("Opening file from path: "+pathString);
-    console.log("my object: %o", pathString);
     helper_file_open(pathString)
 });
 
@@ -120,6 +119,14 @@ function appmenu_file_open() {
 
 function appmenu_helper_save_file_at(pathString) {
     console.log('Saving file at: '+pathString);
+
+    // if the user did not provide a file extention he wants to use we will use a default one (.md is quite common).
+    // we need to do this since the app currently does not support opening a file without file extention which would 
+    // result in the user saving but not ever beeing able to open his work which wuold be bad
+    var userDidNotProvideFileExtention = pathString.split(".").length == 1;
+    if (userDidNotProvideFileExtention) {
+        pathString = pathString+".md";
+    }
     currentOpenFilePathString = pathString;
     var data = editor.getMarkdown();
     fs.writeFileSync(pathString, data);
