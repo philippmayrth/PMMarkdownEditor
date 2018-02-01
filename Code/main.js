@@ -71,15 +71,13 @@ app.on('activate', () => {
 const ipc = require('electron').ipcMain
 const dialog = require('electron').dialog
 
-var fileDialogFilters = {
-  filters: [
+var fileDialogFilters = [
     { name: 'Markdown', extensions: ['md', 'markdown', 'mdown', 'mkdn', 'mkd', 'mdwn', 'mkd', 'pmmd', 'txt', 'text'] },
-  ]
-};
+  ];
 
 ipc.on('open-file-dialog', function (event) {
   dialog.showOpenDialog({
-    fileDialogFilters,
+    filters: fileDialogFilters,
     properties: ['openFile']
   }, function (files) {
     if (files) event.sender.send('selected-directory', files)
@@ -89,7 +87,7 @@ ipc.on('open-file-dialog', function (event) {
 ipc.on('save-dialog', function (event) {
   const options = {
     defaultPath: "Unnamed.md",
-    fileDialogFilters
+    filters: fileDialogFilters
   }
   dialog.showSaveDialog(options, function (filename) {
     event.sender.send('saved-file', filename)
