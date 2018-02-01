@@ -49,7 +49,7 @@ const template = [
       {role: 'copy'},
       {role: 'paste'},
       {role: 'delete'},
-      {role: 'selectall'}
+      //{role: 'selectall'} // removed since its not working in markdown edit view
     ]
   },
   {
