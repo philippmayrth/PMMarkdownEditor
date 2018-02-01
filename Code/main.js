@@ -45,9 +45,16 @@ app.on('ready', function() {
 app.on('window-all-closed', () => {
   // On macOS it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
-  if (process.platform !== 'darwin') {
+  
+  /* 
+    Temporarily quit the app if no windows are open.
+    This is done because the application menu would have to be updated to not show items like File->Save 
+    if no window is shown but the app itself has focus (is displayd in the app menu next to the apple icon)
+    If this should be changed back to normal be shure to update the app menu in such a case.
+  */
+  //if (process.platform !== 'darwin') {
     app.quit()
-  }
+  //}
 })
 
 app.on('activate', () => {
