@@ -11,8 +11,24 @@ var editor = new tui.Editor({
     initialEditType: 'wysiwyg',
     previewStyle: 'vertical',
     height: '100%',
-    exts: ['table']
+    exts: ['table'],
+    hooks: {
+        previewBeforeHook: function(html) { return changeHTMLForPreviewTab(html); },
+      }
 });
+
+// Start: prevent links written in Markdown to fuck up the app instaed open in external browser
+function changeHTMLForPreviewTab(html) {
+    return html;
+}
+
+var shell = require('electron').shell;
+    // open links externally by default if they are displayed in the preview of the markdown editor tab (wuold fuck up the app if we didnt do this)
+    $(document).on('click', '.te-preview a', function(event) {
+        event.preventDefault();
+        shell.openExternal(this.href);
+});
+// End
 
 ipc.on('open_file_at_path', function(event, message) {
     var pathString = message;
