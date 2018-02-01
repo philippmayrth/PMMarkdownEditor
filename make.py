@@ -5,7 +5,7 @@ import plistlib
 
 buildDir = "Build"
 codeDir = "Code"
-finalAppName = "Markdown Editor"
+finalAppName = "PM Markdown Editor"
 CFBundleIdentifier = "de.philippmayr.markdowneditor"
 
 def composeIcon():
