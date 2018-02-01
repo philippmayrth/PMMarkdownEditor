@@ -17,21 +17,21 @@ const template = [
         },
       {
           label: 'Open',
-          //accelerator: "CmdOrCtrl+O",
+          accelerator: "CmdOrCtrl+O",
           click (item, focusedWindow) {
             focusedWindow.webContents.send('action', 'file.open');
           }
         },
       {
           label: 'Save',
-          //accelerator: "CmdOrCtrl+S",
+          accelerator: "CmdOrCtrl+S",
           click (item, focusedWindow) { 
             focusedWindow.webContents.send('action', 'file.save');
           }
         },
       {
           label: 'Save As',
-          //accelerator: "CmdOrCtrl+Shift+S",
+          accelerator: "CmdOrCtrl+Shift+S",
           click (item, focusedWindow) { 
             focusedWindow.webContents.send('action', 'file.save_as');
           }

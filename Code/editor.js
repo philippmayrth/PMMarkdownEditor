@@ -11,6 +11,7 @@ var editor = new tui.Editor({
     initialEditType: 'wysiwyg',
     previewStyle: 'vertical',
     height: '100%',
+    useCommandShortcut: false, // can be reenabled later once the cmd+s and other os spesific keys dont prevent the proper app hotkey
     exts: ['table'],
     hooks: {
         previewBeforeHook: function(html) { return changeHTMLForPreviewTab(html); },
