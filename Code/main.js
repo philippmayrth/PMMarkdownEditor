@@ -92,3 +92,16 @@ ipc.on('appmenu.file.new.click', function(event, message) {
   console.log("icp new file open in main process");
 });
 
+
+
+ipc.on('close-window-with-confirm', function(event, message) {
+  var widnowId = message;
+  console.log("The editor in the window with id: "+widnowId+" would like the user to CONFIRM before its closed");
+  sharedWindowManager.closeWindowWithIdAndAskUserToConfirm(widnowId);
+});
+
+ipc.on('close-window-without-confirm', function(event, message) {
+  var widnowId = message;
+  console.log("The editor in the window with id: "+widnowId+" asked the window to close");
+  sharedWindowManager.closeWindowWithId(widnowId);
+});

@@ -2,8 +2,8 @@ const ipc = require('electron').ipcRenderer;
 const {remote, dialog} = require('electron');
 const fs = require("fs");
 
+var currentWindowIdentifier = null; // the window id of the widnow this renderer is shown in
 var currentOpenFilePathString = false;
-
 
 // initialise the markdown editor
 var editor = new tui.Editor({
@@ -36,14 +36,56 @@ ipc.on('action', function(event, message) {
             appmenu_file_save_as();
             break;
 
+        case "app-window-about-to-close":
+            handle_window_about_to_close();
+            break;
+
+        case "user-confirmed-save-before-close":
+            handle_user_confirmed_save_before_close();
+            break;
+
         default:
             break;
     }
 });
 
-ipc.on('window', function(event, message) {
-    alert("window will be closed");
+ipc.on('apply_window_id_for_ipc', function(event, message) {
+    console.log("apply_window_id_for_ipc: "+message);
+    currentWindowIdentifier = message;
 });
+
+function send_to_main_close_window_with_confirm() {
+    ipc.send("close-window-with-confirm", currentWindowIdentifier);
+}
+
+function send_to_main_close_window_without_confirm() {
+    ipc.send("close-window-without-confirm", currentWindowIdentifier);
+}
+
+function handle_window_about_to_close() {
+    if (should_show_close_confirmation()) { // check if there is stuff to save
+        send_to_main_close_window_with_confirm();
+    }
+    else {
+        send_to_main_close_window_without_confirm();
+    }
+}
+
+function handle_user_confirmed_save_before_close() {
+    var success = appmenu_file_save();
+
+    if (success) { // check for success - user might have canceled the saving dialog which wuld result in a 'failure' namely the file not beeing saved
+        send_to_main_close_window_without_confirm();
+    }
+}
+
+function should_show_close_confirmation() {
+    if (editor.getMarkdown().toString().trim().length === 0) {
+        // nothing to save - close window
+        return false;
+    }
+    return true;
+}
 
 function helper_file_open(pathString) {
     currentOpenFilePathString = pathString;
@@ -64,6 +106,7 @@ function appmenu_helper_save_file_at(pathString) {
     currentOpenFilePathString = pathString;
     var data = editor.getMarkdown();
     fs.writeFileSync(pathString, data);
+    return true; // for now jsut always return success
 }
 
 function appmenu_file_save_as() {
@@ -71,43 +114,20 @@ function appmenu_file_save_as() {
 
     ipc.on('saved-file', function (event, path) {
         if (path) {
-            appmenu_helper_save_file_at(`${path}`)
+            return appmenu_helper_save_file_at(`${path}`)
+        }
+        else {
+            // user canceled the saving dialog
+            return false;
         }
     })
 }
 
 function appmenu_file_save() {
     if (!currentOpenFilePathString) {
-        appmenu_file_save_as();
+        return appmenu_file_save_as();
     }
     else {
-        appmenu_helper_save_file_at(currentOpenFilePathString);
-    }
-}
-
-window.onbeforeunload = function(event) {
-    event.preventDefault();
-
-    if (editor.getMarkdown().toString().trim().length === 0) {
-        // nothing to save - close window
-        return undefined;
-    }
-
-    var options = {
-        type: 'question',
-        title: 'Save file', // not shown on macOS
-        message: "Do you want to save this file?",
-        detail: "Your changes to the file will be lost if you don't save them.",
-        buttons: ['Yes', 'No']
-    };
-
-    var choice = remote.dialog.showMessageBox(remote.getCurrentWindow(), options);
-
-    if (choice === 1) {
-        return undefined; // return undefined to close the window return anything else to keep open
-    }
-    else {
-        appmenu_file_save();
-        return true; // return true to keep window open
+        return appmenu_helper_save_file_at(currentOpenFilePathString);
     }
 }
