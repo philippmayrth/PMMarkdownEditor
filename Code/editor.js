@@ -10,7 +10,8 @@ var editor = new tui.Editor({
     el: document.querySelector('#editSection'),
     initialEditType: 'wysiwyg',
     previewStyle: 'vertical',
-    height: '100%'
+    height: '100%',
+    exts: ['table']
 });
 
 ipc.on('open_file_at_path', function(event, message) {
