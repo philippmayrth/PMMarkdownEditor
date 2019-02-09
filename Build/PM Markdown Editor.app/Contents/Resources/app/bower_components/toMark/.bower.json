@@ -1,0 +1,35 @@
+{
+  "name": "toMark",
+  "authors": [
+    {
+      "name": "Sungho Kim",
+      "email": "shirenbeat@gmail.com"
+    }
+  ],
+  "moduleType": [
+    "globals"
+  ],
+  "main": [
+    "dist/toMark.js"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "lib/",
+    "test",
+    "tests"
+  ],
+  "homepage": "https://github.com/nhnent/toMark",
+  "version": "0.0.19",
+  "_release": "0.0.19",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.0.19",
+    "commit": "d611f9e6cca35373dad15ced8ffdf7aa7828a7a4"
+  },
+  "_source": "https://github.com/nhnent/toMark.git",
+  "_target": "0.0.19",
+  "_originalSource": "nhnent/toMark"
+}

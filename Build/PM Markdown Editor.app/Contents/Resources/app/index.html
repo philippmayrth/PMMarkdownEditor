@@ -1,0 +1,48 @@
+<html>
+<head>
+    <!-- fix: https://stackoverflow.com/questions/32621988/electron-jquery-is-not-defined -->
+    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+
+    <script src="./bower_components/jquery/dist/jquery.js"></script>
+    <script src='./bower_components/markdown-it/dist/markdown-it.js'></script>
+    <script src="./bower_components/toMark/dist/toMark.js"></script>
+    <script src="./bower_components/tui-code-snippet/dist/tui-code-snippet.js"></script>
+    <script src="./bower_components/codemirror/lib/codemirror.js"></script>
+    <script src="./bower_components/highlightjs/highlight.pack.js"></script>
+    <script src="./bower_components/squire-rte/build/squire-raw.js"></script>
+    <script src="./bower_components/tui-editor/dist/tui-editor-Editor.js"></script>
+    <script src="./bower_components/tui-editor/dist/tui-editor-extTable.js"></script>
+
+    <!-- Those plugins did nor work: -->
+    <!--<script src="./bower_components/tui-editor/dist/tui-editor-extChart.js"></script>-->
+    <!--<script src="./bower_components/tui-editor/dist/tui-editor-extColorSyntax.js"></script>-->
+
+    <link rel="stylesheet" href="./bower_components/codemirror/lib/codemirror.css">
+    <link rel="stylesheet" href="./bower_components/highlightjs/styles/github.css">
+    <link rel="stylesheet" href="./bower_components/tui-editor/dist/tui-editor.css">
+    <link rel="stylesheet" href="./bower_components/tui-editor/dist/tui-editor-contents.css">
+
+    <script>if (window.module) module = window.module;</script>
+
+    <link rel="stylesheet" type="text/css" href="stylesheet.css">
+
+    <!-- TODO: Remove after development -->
+    <script src="http://localhost:35729/livereload.js"></script>
+</head>
+
+<body>
+    <!-- START - comand plate -->
+    <div id="comandPlate">
+        <input name="comand"></input>
+        <input type="button">GO!</input>
+    </div>
+    
+    <!-- END - comand plate -->
+
+    <div id="editSection"></div>
+
+
+    <script src="editor.js"></script>
+</body>
+
+</html>

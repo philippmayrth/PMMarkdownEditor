@@ -1,0 +1,10 @@
+body {
+    margin: 0px;
+    margin-bottom: 2px; /* avoid the nasty scrolbar if we dont need it */
+}
+
+#comandPlate {
+    /* hide the comand plate for now so we can focus on more important features */
+    height: 0px;
+    widows: 0px;
+}

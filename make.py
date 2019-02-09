@@ -71,11 +71,11 @@ def buildMacApp():
 
     # TODO: Sign app for mac app store.
     # This will sign the app for distribution outside of the Mac App Store
-    os.system('electron-osx-sign "$(pwd)/Build/'+finalAppName+'.app" --platform=darwin --type=development')
+    #os.system('electron-osx-sign "$(pwd)/Build/'+finalAppName+'.app" --platform=darwin --type=development')
 
-    #os.system('electron-osx-sign "$(pwd)/Build/'+finalAppName+'.app" --platform=mas --type=distribution --entitlements=$(pwd)/entitlements.mas.plist')
+    os.system('electron-osx-sign "$(pwd)/Build/'+finalAppName+'.app" --platform=mas --type=distribution --entitlements=$(pwd)/entitlements.mas.plist')
     # aparently we have to create an installer and sign it with yet a nother singature (Mac Install Distribution) if we want to publish on the Mac App Store
-    #os.system('productbuild --component "Build/'+finalAppName+'.app/" /Applications --sign "3rd Party Mac Developer Installer: Philipp Mayr (59925VM83D)" --product "Build/'+finalAppName+'.app/Contents/Info.plist" "Build/'+finalAppName+'.pkg"')
+    os.system('productbuild --component "Build/'+finalAppName+'.app/" /Applications --sign "3rd Party Mac Developer Installer: Philipp Mayr (59925VM83D)" --product "Build/'+finalAppName+'.app/Contents/Info.plist" "Build/'+finalAppName+'.pkg"')
 
     print("IMPORTANT NOTE: Please use the Application Loader app with version 3.0 since newer versioins will fail to upload the resulting pkg file.")
     print()

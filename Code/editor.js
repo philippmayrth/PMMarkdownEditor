@@ -68,6 +68,10 @@ ipc.on('action', function(event, message) {
             handle_user_confirmed_save_before_close();
             break;
 
+        case "file.export.html":
+            handle_export_html();
+            break;
+
         default:
             break;
     }
@@ -149,6 +153,10 @@ function appmenu_file_open() {
             helper_file_open(`${path}`)
         }
     })
+}
+
+function handle_export_html() {
+    alert("not yet implemented");
 }
 
 function appmenu_helper_save_file_at(pathString) {
