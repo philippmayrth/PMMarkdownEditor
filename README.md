@@ -74,3 +74,16 @@ Highlight word repetition and density
 Great feature set for later ads:
 [http://marked2app.com](http://marked2app.com)
 [https://caret.io](https://caret.io)
+
+
+# Reqirement for the Windows installer
+* Available in multiple languages
+* Show licence page before installing reqiure user to accept
+* Allow the user to select install dir
+* For manual updates install in the install dir the user chose when installing a previous version
+
+* Links in start menu
+* Links on desktop
+* Show open now option when the installation is successful
+* Provide Uninstall Program
+* After uninstall open link to website asking why the user uninstalled the app
