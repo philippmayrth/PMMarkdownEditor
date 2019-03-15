@@ -14,7 +14,7 @@ Unicode true
 !define APP_NAME "PM Markdown Editor"
 
 # This will be in the installer/uninstaller's title bar
-Name "${COMPANY_NAME} - ${APP_NAME}"
+Name "${APP_NAME}"
 ;Icon "logo.ico"
 OutFile "${APP_NAME} Installer.exe"
 
@@ -33,14 +33,17 @@ RequestExecutionLevel user
 ;Interface Settings
 
 !define MUI_ABORTWARNING
+!define MUI_FINISHPAGE_RUN "${APP_NAME}.exe"
 
 ;--------------------------------
 ;Pages
 
+!insertmacro MUI_PAGE_WELCOME
 !insertmacro MUI_PAGE_LICENSE "LICENCEWINDOWSINSTALL.txt"
 ;!insertmacro MUI_PAGE_COMPONENTS ; the App is simple without any components
 !insertmacro MUI_PAGE_DIRECTORY
 !insertmacro MUI_PAGE_INSTFILES
+!insertmacro MUI_PAGE_FINISH
 
 !insertmacro MUI_UNPAGE_CONFIRM
 !insertmacro MUI_UNPAGE_INSTFILES
@@ -138,18 +141,40 @@ WriteUninstaller "$INSTDIR\Uninstall.exe"
 SectionEnd
 
 
+Section "Shortcuts"
+; desktop link
+CreateShortCut "$DESKTOP\${APP_NAME}.lnk" "$INSTDIR\${APP_NAME}.exe"
+
+; start menu link
+CreateDirectory "$SMPrograms\${COMPANY_NAME}"
+CreateShortCut "$SMPROGRAMS\${COMPANY_NAME}\${APP_NAME}.lnk" "$INSTDIR\${APP_NAME}.exe"
+SectionEnd
+
+
 
 ; The uninstall section
 
 Section "Uninstall"
 
-;ADD YOUR OWN FILES HERE...
-
 Delete "$INSTDIR\Uninstall.exe"
 
-; Try to remove the install directory - this will only happen if it is empty
-RMDir "$INSTDIR"
+; remvoe main program
+RMDir /r /REBOOTOK $INSTDIR
 
+; remove desktop icon
+Delete "$DESKTOP\${APP_NAME}.lnk"
+
+; remove start menu items
+Delete "$SMPROGRAMS\${COMPANY_NAME}\${APP_NAME}.lnk"
+
+; remove the ${COMPANY_NAME} folder if it is empty (and not contianing any other software from the company)
+RMDir /REBOOTOK "$SMPrograms\${COMPANY_NAME}"
+
+; remove regkeys
 DeleteRegKey /ifempty HKCU "Software\${APP_NAME}"
+
+; open url in browser to ask the user why the software was uninstalled
+; the intention is to help improve the software based on this type of user feedback
+ExecShell "open" "https://avalonsoft.de/"
 
 SectionEnd
