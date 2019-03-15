@@ -95,8 +95,13 @@ class WindowsBuilder32bit(Builder):
         electronDirInDist = os.path.join(buildDir, appName)
         shutil.move(os.path.join(electronDirInDist, "electron.exe"), os.path.join(electronDirInDist, appName+".exe"))
 
+        # Change the default Electron icon to a App spesific one
         os.system(".\rcedit-x86.exe '.\Build\win32\PM Markdown Editor\PM Markdown Editor.exe' --set-icon .\Artwork\WindowsAppIcon.ico")
-        # TODO: Build Installer / Uninstaller Apps (preserving all licence files)
+
+        # Remvoe the old installer and create a new one
+        #os.remove("")
+        installerScriptPath = "windowsinstaller.nsi"
+        os.system(f"C:\Program Files\NSIS\makensis.exe {installerScriptPath}")
 
 
 class BuilderFactory():
