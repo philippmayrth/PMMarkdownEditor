@@ -2,6 +2,8 @@ from typing import *
 from abc import ABC, abstractmethod
 import os
 import sys
+import logging
+import subprocess
 import shutil
 import plistlib
 
@@ -82,26 +84,33 @@ class MacBuilder(Builder):
 
 class WindowsBuilder32bit(Builder):
     def build(self, codeDir: str, destinationDir: str, *, appName: str):
+        logging.info("Building for Windows 32 bit")
         buildDir = os.path.join(destinationDir, "win32")
         if os.path.exists(buildDir):
             shutil.rmtree(buildDir)
 
         # create app and copy source code
+        logging.info("Creating App and copying resources")
         electronWindowsAppSource = os.path.join("electron-v3.1.6-win32-ia32")
         shutil.copytree(electronWindowsAppSource, os.path.join(buildDir, appName), symlinks=True)
         shutil.copytree(codeDir, os.path.join(buildDir, appName, "resources", "app"), symlinks=True)
 
         # Rename electron.exe to appName so a user can find the app better if the users stats it from within the dir and not a shortcut
+        logging.info("Remame executable")
         electronDirInDist = os.path.join(buildDir, appName)
         shutil.move(os.path.join(electronDirInDist, "electron.exe"), os.path.join(electronDirInDist, appName+".exe"))
 
         # Change the default Electron icon to a App spesific one
-        os.system(".\rcedit-x86.exe '.\Build\win32\PM Markdown Editor\PM Markdown Editor.exe' --set-icon .\Artwork\WindowsAppIcon.ico")
+        logging.info("Chanching default executable icon")
+        subprocess.call([".\\rcedit-x86.exe", "./Build/win32/PM Markdown Editor/PM Markdown Editor.exe", "--set-icon", ".\\Artwork\\WindowsAppIcon.ico"])
 
         # Remvoe the old installer and create a new one
-        #os.remove("")
+        logging.info("Creating installer")
         installerScriptPath = "windowsinstaller.nsi"
-        os.system(f"C:\Program Files\NSIS\makensis.exe {installerScriptPath}")
+        InstallerExeFilePath = os.path.abspath(os.path.join(destinationDir, "PM Markdown Editor Installer.exe"))
+        if os.path.exists(InstallerExeFilePath):
+            os.remove(InstallerExeFilePath)
+        subprocess.call(["C:\\Program Files\\NSIS\\makensis.exe", f"./{installerScriptPath}"])
 
 
 class BuilderFactory():
@@ -114,6 +123,7 @@ class BuilderFactory():
 
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO)
     builder = BuilderFactory.getBuilderNativeToCurrentPlatform()
     builder.CFBundleIdentifier = "de.philippmayr.markdowneditor"  # required for the Mac version
     builder.build(

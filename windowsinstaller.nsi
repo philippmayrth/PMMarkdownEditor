@@ -9,6 +9,9 @@
 ;Properly display all languages (Installer will not work on Windows 95, 98 or ME!)
 Unicode true
 
+; Insatller branding
+BrandingText "Avalonsfot, Installer System 1.0"
+
 ;Name and file
 !define COMPANY_NAME "Avalonsoft"
 !define APP_NAME "PM Markdown Editor"
@@ -16,7 +19,7 @@ Unicode true
 # This will be in the installer/uninstaller's title bar
 Name "${APP_NAME}"
 ;Icon "logo.ico"
-OutFile "${APP_NAME} Installer.exe"
+OutFile "Build/${APP_NAME} Installer.exe"
 
 ;Default installation folder
 ; Using local app data here because we dont need admin privileges for that
@@ -47,6 +50,7 @@ RequestExecutionLevel user
 
 !insertmacro MUI_UNPAGE_CONFIRM
 !insertmacro MUI_UNPAGE_INSTFILES
+!insertmacro MUI_UNPAGE_FINISH
 
 ;--------------------------------
 ;Languages

@@ -86,3 +86,15 @@ Great feature set for later ads:
 * Show open now option when the installation is successful
 * Provide Uninstall Program
 * After uninstall open link to website asking why the user uninstalled the app
+
+
+# Building
+
+## On Mac
+TODO
+
+## On Windows (32 bit)
+
+* The tool NSIS is required
+* Then just run make.py it will detect the OS and build for it automaticaly
+* Take the installer that was created from the Build directory
