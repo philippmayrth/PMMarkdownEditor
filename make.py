@@ -95,7 +95,7 @@ class WindowsBuilder32bit(Builder):
         electronDirInDist = os.path.join(buildDir, appName)
         shutil.move(os.path.join(electronDirInDist, "electron.exe"), os.path.join(electronDirInDist, appName+".exe"))
 
-        # TODO: Change App Icon
+        os.system(".\rcedit-x86.exe '.\Build\win32\PM Markdown Editor\PM Markdown Editor.exe' --set-icon .\Artwork\WindowsAppIcon.ico")
         # TODO: Build Installer / Uninstaller Apps (preserving all licence files)
 
 

@@ -84,6 +84,5 @@ Great feature set for later ads:
 * Links in start menu
 * Links on desktop
 * Show open now option when the installation is successful
-
 * Provide Uninstall Program
 * After uninstall open link to website asking why the user uninstalled the app
