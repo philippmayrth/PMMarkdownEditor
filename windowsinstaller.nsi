@@ -43,7 +43,7 @@ RequestExecutionLevel user
 ;Pages
 
 !insertmacro MUI_PAGE_WELCOME
-!insertmacro MUI_PAGE_LICENSE "LICENCEWINDOWSINSTALL.txt"
+!insertmacro MUI_PAGE_LICENSE "LICENCEWINDOWSINSTALL_EN.txt"
 ;!insertmacro MUI_PAGE_COMPONENTS ; the App is simple without any components
 !insertmacro MUI_PAGE_DIRECTORY
 !insertmacro MUI_PAGE_INSTFILES

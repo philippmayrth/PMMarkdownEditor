@@ -1,0 +1,40 @@
+Bitte lesen Sie sich diese Lizenz bestimmungen durch, bevor Sie die Software Instalieren, und
+auf "Akzeptieren" clicken
+
+
+Der Begrif Software beinhaltet alle Dateien, die sie heruntergeladen haben, um dieses Programm zu installieren und zu verwenden.
+
+SYSTEMVORAUSSETZUNGEN:
+
+- Widnows 10 oder höher
+- ca. 500 MB freier speicherplatz auf ihrem Computer
+
+
+Alle Angaben Ohne gewähr
+
+
+§1 Diese Software darf nicht weitergegeben, Verkauft oder Vermietet werden.
+
+§2 Diese Software darf nicht kopiert werden.
+
+§3 Diese Software darf nicht modifiziert, verendert, 
+dekompilliert oder in irgendeiner anderen Form verändert
+werden.
+
+§4 Der herausgeber dieser Software ist nicht verpflichtet Hilfeleistungen zu geben
+
+§5 Der herausgeber dieser Software ist nicht verpflichtet Dokumentationen / Anleitungen
+in digitaler oder ausgedruckter Form anzubieten.
+
+§6 Sie dürfen diese Software auf maximal 1 Computern Instalieren.
+
+§7 Vom herausgeber dieser Software müssen weder kostenlose noch kostenpflichtige Updates angeboten werden.
+
+§8 Bei eventuellen Schäden, die beim gebrauch dieser Software entstehen könen oder entstanden sien könten haftet der 
+Anwender, nicht der Herausgeber.
+
+§9 Sie haben regelmäsig Systemsicherungen vorzunehmen.
+
+§10 Der herausgeber dieser Software haftet nicht für mögliche Fehler in der Software, und ist auch nicht verpflichtet diese nachzubessern.
+
+§11 Der herausgeber haftet nicht für Schäden an anderen Geräten, die durch diese Software verursacht sein könnten.
