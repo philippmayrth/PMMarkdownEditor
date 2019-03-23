@@ -79,6 +79,10 @@ const template = [
       {
         label: 'App Website',
         click () { require('electron').shell.openExternal('https://www.philipp-mayr.de/apps/markdown-editor/') }
+      },
+      {
+        label: 'opensource projects used',
+        click () { require('electron').shell.openExternal('https://www.philipp-mayr.de/apps/markdown-editor/opensource') }
       }
     ]
   }
@@ -89,10 +93,6 @@ if (process.platform === 'darwin') {
     label: app.getName(),
     submenu: [
       {role: 'about'},
-      {
-        label: 'opensource projects used',
-        click () { require('electron').shell.openExternal('https://www.philipp-mayr.de/apps/markdown-editor/opensource') }
-      },
       {type: 'separator'},
       {role: 'services', submenu: []},
       {type: 'separator'},
