@@ -110,7 +110,7 @@ class WindowsBuilder32bit(Builder):
         InstallerExeFilePath = os.path.abspath(os.path.join(destinationDir, "PM Markdown Editor Installer.exe"))
         if os.path.exists(InstallerExeFilePath):
             os.remove(InstallerExeFilePath)
-        subprocess.call(["C:\\Program Files\\NSIS\\makensis.exe", f"./{installerScriptPath}"])
+        subprocess.call(["C:\\Program Files (x86)\\NSIS\\makensis.exe", f"./{installerScriptPath}"])
 
 
 class BuilderFactory():

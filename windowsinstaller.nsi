@@ -2,6 +2,7 @@
 ;Include Modern UI
 
 !include "MUI2.nsh"
+!include "FileAssociation.nsh"
 
 ;--------------------------------
 ;General
@@ -139,6 +140,15 @@ File /nonfatal /r "Build/win32/${APP_NAME}\" ; keep backslash at the end to copy
 ;Store installation folder
 WriteRegStr HKCU "Software\${APP_NAME}" "" $INSTDIR ; good for updates?
 
+${registerExtension} "$INSTDIR\${APP_NAME}.exe" ".md" "Markdown_File"
+${registerExtension} "$INSTDIR\${APP_NAME}.exe" ".markdown" "Markdown_File"
+${registerExtension} "$INSTDIR\${APP_NAME}.exe" ".mkdn" "Markdown_File"
+${registerExtension} "$INSTDIR\${APP_NAME}.exe" ".mkd" "Markdown_File"
+${registerExtension} "$INSTDIR\${APP_NAME}.exe" ".mdwn" "Markdown_File"
+; used only to check wheter the file extention is registering itself correctly
+${registerExtension} "$INSTDIR\${APP_NAME}.exe" ".pmmd" "Markdown_File"
+
+
 ;Create uninstaller
 WriteUninstaller "$INSTDIR\Uninstall.exe"
 
@@ -173,6 +183,14 @@ Delete "$SMPROGRAMS\${COMPANY_NAME}\${APP_NAME}.lnk"
 
 ; remove the ${COMPANY_NAME} folder if it is empty (and not contianing any other software from the company)
 RMDir /REBOOTOK "$SMPrograms\${COMPANY_NAME}"
+
+; remove file extention assosiations
+${unregisterExtension} ".md" "Markdown_File"
+${unregisterExtension} ".markdown" "Markdown_File"
+${unregisterExtension} ".mkdn" "Markdown_File"
+${unregisterExtension} ".mkd" "Markdown_File"
+${unregisterExtension} ".mdwn" "Markdown_File"
+${unregisterExtension} ".pmmd" "Markdown_File"
 
 ; remove regkeys
 DeleteRegKey /ifempty HKCU "Software\${APP_NAME}"
