@@ -1,3 +1,4 @@
+/* javascript-obfuscator:disable */
 const ipc = require('electron').ipcRenderer;
 const {remote, dialog} = require('electron');
 const fs = require("fs");

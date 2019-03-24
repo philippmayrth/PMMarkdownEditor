@@ -1,3 +1,4 @@
+/* javascript-obfuscator:disable */
 const {app, Menu} = require('electron')
 const path = require('path')
 const url = require('url')

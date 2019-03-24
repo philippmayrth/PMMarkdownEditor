@@ -83,6 +83,9 @@ TODO
 
 ## On Windows (32 bit)
 
+* The tool yarn is required
+* The npm tool is required
 * The tool NSIS is required
+* In the project root directory type ```yarn``` to install the development dependencies (currently the js obfuscator)
 * Then just run make.py it will detect the OS and build for it automaticaly
 * Take the installer that was created from the Build directory

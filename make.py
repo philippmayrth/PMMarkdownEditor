@@ -13,10 +13,45 @@ class Builder(ABC):
     def build(self, codeDir: str, destinationDir: str, *, appName: str):
         pass
 
+    @abstractmethod
+    def getYarnExecutablePath(self) -> str:
+        pass
+
+    def obfuscateJavaScriptDirectory(self, codeDir: str, destinationDir: str):
+        # Copy over all files (not just .js)
+        shutil.copytree(codeDir, destinationDir)
+
+        # Obfuscate .js files
+        subprocess.call([
+            self.getYarnExecutablePath(),
+            "javascript-obfuscator",
+            str(destinationDir),
+            "--config",
+            "js-obfuscator.json",
+            "--exclude",
+            "node_modules,bower_components"
+        ])
+        
+        # Discard the not obfuscated .js files
+        for root, dirs, files in os.walk(destinationDir):
+            for name in files:
+                obfuscatedFileExtention = "-obfuscated.js"
+                if obfuscatedFileExtention in name:
+                    fileNameOfNotObfuscatedFile = name.replace(obfuscatedFileExtention, ".js")
+                    os.remove(os.path.join(root, fileNameOfNotObfuscatedFile))
+                    newFileNameForObfuscatedFile = fileNameOfNotObfuscatedFile
+                    shutil.move(
+                        os.path.join(root, name),
+                        os.path.join(root, newFileNameForObfuscatedFile)
+                    )
+
 
 class MacBuilder(Builder):
     def __init__(self):
         self.CFBundleIdentifier = None
+
+    def getYarnExecutablePath(self) -> str:
+        return "yarn"
 
     def build(self, codeDir: str, destinationDir: str, *, appName: str):
         buildDir = os.path.join(destinationDir, "macOS")
@@ -83,11 +118,22 @@ class MacBuilder(Builder):
 
 
 class WindowsBuilder32bit(Builder):
+    def getYarnExecutablePath(self) -> str:
+        return "C:\\Program Files (x86)\\Yarn\\bin\\yarn.cmd"
+
     def build(self, codeDir: str, destinationDir: str, *, appName: str):
         logging.info("Building for Windows 32 bit")
         buildDir = os.path.join(destinationDir, "win32")
         if os.path.exists(buildDir):
             shutil.rmtree(buildDir)
+
+        # obfuscate javascript source code
+        obfuscatedCodeDir = os.path.join(buildDir, "tmp", "ObfuscatedCode")
+        if os.path.exists(obfuscatedCodeDir):
+            shutil.rmtree(obfuscatedCodeDir)
+            
+        self.obfuscateJavaScriptDirectory(codeDir, obfuscatedCodeDir)
+        codeDir = obfuscatedCodeDir
 
         # create app and copy source code
         logging.info("Creating App and copying resources")
