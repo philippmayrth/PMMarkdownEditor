@@ -57,7 +57,7 @@ const template = [
     submenu: [
       {role: 'reload'},
       {role: 'forcereload'},
-      {role: 'toggledevtools'},
+      //{role: 'toggledevtools'}, // TODO: Find a better way to toggle this for development on and production off
       {type: 'separator'},
       {role: 'resetzoom'},
       {role: 'zoomin'},
