@@ -1,4 +1,3 @@
-/* javascript-obfuscator:disable */
 const ipc = require('electron').ipcRenderer;
 const {remote, dialog} = require('electron');
 const fs = require("fs");
@@ -19,6 +18,9 @@ var editor = new tui.Editor({
         previewBeforeHook: function(html) { return changeHTMLForPreviewTab(html); },
       }
 });
+
+// Chck if an update is available
+check_for_update();
 
 // Start: prevent links written in Markdown to fuck up the app instaed open in external browser
 function changeHTMLForPreviewTab(html) {
@@ -198,3 +200,25 @@ function appmenu_file_save() {
         return appmenu_helper_save_file_at(currentOpenFilePathString);
     }
 }
+
+
+// Start:Check update
+
+function check_for_update() {
+    $.jsonrpc({
+        url: "https://philipp-mayr.de/kunden/api/update.py",
+        method: 'updateAviable',
+        params: {appId: 'PM Markdown Editor', versionId: '1.0.0'}
+    }).done(function(result) {
+        if (result === true) {
+            // an update is available
+            ipc.send("update.available.notifyuser", "https://www.philipp-mayr.de/apps/markdown-editor/")
+        }
+    }).fail(function(error) {
+        console.info('jsonrpc2: code:', error.code);
+        console.info('jsonrpc2: message:', error.message);
+        console.info(error.data);
+    });
+}
+
+// End: Check update

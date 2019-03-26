@@ -1,5 +1,4 @@
-/* javascript-obfuscator:disable */
-const {app, Menu} = require('electron')
+const {app, Menu, shell} = require('electron')
 const path = require('path')
 const url = require('url')
 const WindowManager = require('./WindowManager');
@@ -111,3 +110,36 @@ ipc.on('close-window-without-confirm', function(event, message) {
   console.log("The editor in the window with id: "+widnowId+" asked the window to close");
   sharedWindowManager.closeWindowWithId(widnowId);
 });
+
+
+
+// Start upate code
+
+ipc.on('update.available.notifyuser', function(event, message) {
+  var updateWebsite = message;
+  console.log("Notify the user about a new update being available");
+
+  var options = {
+    type: 'info',
+    title: 'Update available', // not shown on macOS
+    message: "Update available",
+    detail: "A new version of this software is available. Do you want to update now?",
+    //defaultId: 2,
+    buttons: ['Update Now', 'Maybe later']
+  };
+
+  dialog.showMessageBox(options, function(choice) {
+    var buttonUpdateNow = 0;
+    var buttonUpdateLater = 1;
+
+    if (choice === buttonUpdateNow) {
+      // load download page so the user can download the new version there
+      shell.openExternal(updateWebsite);
+    }
+  });
+
+
+});
+
+// End update code
+

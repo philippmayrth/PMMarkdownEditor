@@ -1,10 +1,9 @@
-/* javascript-obfuscator:disable */
 const {BrowserWindow, dialog} = require('electron');
 const path = require('path')
 const url = require('url')
 
 function WindowManager() {
-    // Return the existing object if if it has been created already
+    // Return the existing object if it has been created already
     if (typeof WindowManager._instance === 'object') {
         console.log("WM: Old instance reused");
         return WindowManager._instance;
