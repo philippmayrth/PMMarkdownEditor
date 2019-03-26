@@ -1,0 +1,28 @@
+{
+  "name": "jquery-jsonrpc2.0",
+  "version": "1.0.0",
+  "homepage": "https://github.com/hagino3000/jquery-jsonrpc2.0",
+  "authors": [
+    "hagino3000"
+  ],
+  "description": "JSON-RPC 2.0 for jQuery >= 1.7",
+  "main": "jquery.jsonrpc.js",
+  "moduleType": [
+    "globals"
+  ],
+  "keywords": [
+    "jquery",
+    "jsonrpc"
+  ],
+  "license": "MIT",
+  "_release": "1.0.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v1.0.0",
+    "commit": "3d407eb3c25b6461c1105c0ee08f28efdb0b768f"
+  },
+  "_source": "https://github.com/hagino3000/jquery-jsonrpc2.0.git",
+  "_target": "^1.0.0",
+  "_originalSource": "jquery-jsonrpc2.0",
+  "_direct": true
+}
