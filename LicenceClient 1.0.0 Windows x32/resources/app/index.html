@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- fix: https://stackoverflow.com/questions/32621988/electron-jquery-is-not-defined -->
+    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+
+    <script src="./node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="./jquery-jsonrpc2.js"></script>
+
+    <script>if (window.module) module = window.module;</script>
+
+    <meta charset="UTF-8">
+    <title>Register Software</title>
+  </head>
+  <body>
+    <!-- All of the Node.js APIs are available in this renderer process. -->
+    
+    <div id="window-description"></div>
+    <br>
+    <br>
+    <br>
+    <input type="text" id="input-licence-key" size="35" placeholder="XXXXX-XXXXX-XXXXX-XXXXX" />
+    <button id="button-activate-licence">Activate</button>
+
+    <br>
+    <br>
+    <br>
+    <div id="support-text"></div>
+
+    <script>
+      // You can also require other files to run in this process
+      require('./renderer.js')
+    </script>
+  </body>
+</html>

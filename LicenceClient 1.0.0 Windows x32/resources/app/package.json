@@ -1,0 +1,16 @@
+{
+  "name": "register-software",
+  "version": "1.0.0",
+  "description": "An application to register a software licence key",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "devDependencies": {
+    "electron": "^4.1.1"
+  },
+  "dependencies": {
+    "jquery": "^3.3.1",
+    "node-wmi": "0.0.5"
+  }
+}
