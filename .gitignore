@@ -1,2 +1,4 @@
 Build/win32/
 Build/PM Markdown Editor Installer.exe
+node_modules/javascript-obfuscator/test/functional-tests/node-transformers/control-flow-transformers/control-flow-replacers/logical-expression-control-flow-replacer/LogicalExpressionControlFlowReplacer.spec.ts
+node_modules/javascript-obfuscator/test/functional-tests/node-transformers/control-flow-transformers/control-flow-replacers/binary-expression-control-flow-replacer/BinaryExpressionControlFlowReplacer.spec.ts

@@ -1,8 +1,9 @@
 const ipc = require('electron').ipcRenderer;
-const {shell} = require('electron');
-const {remote, dialog} = require('electron');
+const {remote, dialog, shell} = require('electron');
 const fs = require("fs");
 const crypto = require("crypto");
+const {app} = require("electron").remote;
+const path = require("path");
 
 
 var currentWindowIdentifier = null; // the window id of the widnow this renderer is shown in
@@ -29,29 +30,37 @@ check_for_update();
 // START: Check the licence dont put this into a seperate function as the function name would be visible even if obfuscated
 ///////////////////////////////////////////////////
 
-const {Base32WithSpeperator} = require( "./formater");
 
-function formatLicenceKeyAsStringFrom(dataSting) {
-    var formater = new Base32WithSpeperator();
-    var binaryData = Buffer.from(dataSting, "utf-8");
-    var formatedData = formater.formatAdvanced(binaryData, 5, "-", 7);
-    return formatedData;
+function activateDemoMode() {
+    alert("The licence could not be verified. In demo mode you can not save files.");
+    ipc.send("licence-setup-demo-mode");
 }
 
 function verifyLicence(licenceKey, licenceCertificate) {
-
-    // TODO: Remove this function name
-    function isLicenceValid(formatedLicenceKeyToCheck, scriptName, scriptVersion, scriptSecret) {
-        var hash = crypto.createHash('sha1').create();
-        hash.update(scriptName+'::'+scriptVersion+'::'+scriptSecret);
-        var formatedGeneratedKey = formatLicenceKeyAsStringFrom(hash.digest("hex"));
-        if (formatedLicenceKeyToCheck === formatedGeneratedKey) {
+    console.log("Checking the licence key: "+licenceKey+" against this licence certificate: "+licenceCertificate);
+    // TODO: Remove this function name - the name is visible also in obfuscated files
+    function commonDRMisLicenceValid(licenceCertificate, scriptName, scriptVersion, scriptSecret) {
+        var hash = crypto.createHash("sha1");
+        let concatstring = scriptName+'::'+scriptVersion+'::'+scriptSecret;
+        hash.update(concatstring);
+        let expectedLicenceCertificateHash = hash.digest("hex");
+        console.log("calculated expected hash hex: "+expectedLicenceCertificateHash)
+        console.log("licence certificate is: "+licenceCertificate);
+         if (licenceCertificate == expectedLicenceCertificateHash) {
             return true;
         }
     
         return false;
     }
-    
+
+    // TODO: Remove this function name - the name is visible also in obfuscated files
+    function isLicenceOK(licenceKey, licenceCertificate, machinedata) {
+        let scriptName = "PMKundenAPILicenceServer";
+        let scriptVersion = "1";
+        let scriptSecret=licenceKey + "::" + machinedata;
+        return commonDRMisLicenceValid(licenceCertificate, scriptName, scriptVersion, scriptSecret);
+    }
+   
     // Read the data (cant be in a sepeate function as it could be overwritten even if obfuscated easily then)
     var wmi = require('node-wmi');
     wmi.Query(
@@ -59,6 +68,13 @@ function verifyLicence(licenceKey, licenceCertificate) {
             class: 'Win32_BIOS'
         }, function(err, bios) {
             //console.log(bios);
+
+            if (err) {
+                console.log("Could not get hardware serial.");
+                activateDemoMode();
+                return
+            }
+
             var machinedata = bios[0]["Manufacturer"]+"."+bios[0]["SerialNumber"];
     
             var shasum = crypto.createHash('sha1');
@@ -69,25 +85,30 @@ function verifyLicence(licenceKey, licenceCertificate) {
             console.log("hashed machine data: ", machinedatahash)
                 
             // comparing the licences
-            let scriptSecret = licenceKey + "::" + machinedata;
-            if (isLicenceValid(licenceKey, scriptName="PMKundenAPILicenceServer", scriptVersion="1", scriptSecret=scriptSecret) !== true) {
-                alert("Invalid licence");
+            
+            if (!isLicenceOK(licenceKey, licenceCertificate, machinedatahash)) {
+                //alert("Invalid licence");
+                activateDemoMode();
+            }
+            else {
+                //alert("Valid licence");
+                console.log("Valid licence detected.");
             }
         }
     );
 }
 
-const pathToLicenceDirectory = "LICENCEDATA";
+const pathToLicenceDirectory = path.dirname(app.getPath("exe"))+"/LICENCEDATA";
 const pathToLicenceFile = pathToLicenceDirectory+"/key.txt";
 const pathToLicenceCertificteFile = pathToLicenceDirectory+"/certificate.txt";
 if (fs.existsSync(pathToLicenceFile) && fs.existsSync(pathToLicenceCertificteFile)) {
-    let licenceKey = fs.readFileSync();
+    let licenceKey = fs.readFileSync(pathToLicenceFile);
     let licenceCertificate = fs.readFileSync(pathToLicenceCertificteFile);
 
+    console.log("Verifying licence now");
     verifyLicence(licenceKey, licenceCertificate);
 } else {
-    alert("The licence could not be verified. In demo mode you can not save files.");
-    ipc.send("licence-setup-demo-mode");
+    activateDemoMode();
     shell.openExternal("LicenceClient/Licence Client.exe");
 }
 

@@ -140,7 +140,7 @@ File /nonfatal /r "Build/win32/${APP_NAME}\" ; keep backslash at the end to copy
 ; add the licence client
 SetOutPath "$INSTDIR\LicenceClient"
 File /nonfatal "LicenceClientConfig.json"
-File /nonfatal /r "LicenceClient 1.0.0 Windows x32\" ; keep backslash at the end to copy a directory
+File /nonfatal /r "LicenceClient 1.1.0 Windows x32\" ; keep backslash at the end to copy a directory
 
 ;Store installation folder
 WriteRegStr HKCU "Software\${APP_NAME}" "" $INSTDIR ; good for updates?

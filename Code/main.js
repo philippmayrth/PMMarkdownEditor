@@ -11,7 +11,9 @@ let openFileAtPathWhenReady = null;
 
 
 function openSoftwareRegistrationApp() {
-  let pathToExecutable = "LicenceClient/Licence Client.exe";
+  let localAppData = app.getPath("home")+"/AppData/Local/";
+  let pathToExecutable = localAppData+"Avalonsoft/PM Markdown Editor/LicenceClient/Licence Client.exe";
+  console.log("opening this executable for licence registration: "+pathToExecutable);
   
   var execFile = require('child_process').execFile, child;
 
@@ -42,8 +44,6 @@ app.on('open-file', function(event, path) {
 // Some APIs can only be used after this event occurs.
 app.on('ready', function() {
   appIsReady = true;
-
-  openSoftwareRegistrationApp();
 
   if (openFileAtPathWhenReady == null) {
     // open default startup window
@@ -112,7 +112,7 @@ function notifyUserFeatureNotAvailableInDemo() {
     var buttonRegisterNow = 0;
     var buttonRegisterLater = 1;
 
-    if (buttonRegisterNow) {
+    if (buttonRegisterNow == choice) {
       openSoftwareRegistrationApp();
     }
   });
@@ -185,4 +185,5 @@ ipc.on('update.available.notifyuser', function(event, message) {
 // Licence stuff
 ipc.on('licence-setup-demo-mode', function(event, message) {
   appIsInDemoMode = true;
+  openSoftwareRegistrationApp();
 });
