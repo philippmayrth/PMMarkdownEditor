@@ -1,8 +1,10 @@
 {
-    "name": "PM Markdown Editor",
+    "name": "pm-markdown-editor",
     "version": "1.0.0",
     "main": "main.js",
     "dependencies": {
+        "node-wmi": "0.0.5",
+        "rfc-3548-b32": "0.0.2",
         "tui-editor": "^1.0.1"
     }
 }

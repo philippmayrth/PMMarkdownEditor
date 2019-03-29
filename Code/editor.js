@@ -1,6 +1,9 @@
 const ipc = require('electron').ipcRenderer;
+const {shell} = require('electron');
 const {remote, dialog} = require('electron');
 const fs = require("fs");
+const crypto = require("crypto");
+
 
 var currentWindowIdentifier = null; // the window id of the widnow this renderer is shown in
 var currentOpenFilePathString = null;
@@ -22,12 +25,83 @@ var editor = new tui.Editor({
 // Chck if an update is available
 check_for_update();
 
+///////////////////////////////////////////////////
+// START: Check the licence dont put this into a seperate function as the function name would be visible even if obfuscated
+///////////////////////////////////////////////////
+
+const {Base32WithSpeperator} = require( "./formater");
+
+function formatLicenceKeyAsStringFrom(dataSting) {
+    var formater = new Base32WithSpeperator();
+    var binaryData = Buffer.from(dataSting, "utf-8");
+    var formatedData = formater.formatAdvanced(binaryData, 5, "-", 7);
+    return formatedData;
+}
+
+function verifyLicence(licenceKey, licenceCertificate) {
+
+    // TODO: Remove this function name
+    function isLicenceValid(formatedLicenceKeyToCheck, scriptName, scriptVersion, scriptSecret) {
+        var hash = crypto.createHash('sha1').create();
+        hash.update(scriptName+'::'+scriptVersion+'::'+scriptSecret);
+        var formatedGeneratedKey = formatLicenceKeyAsStringFrom(hash.digest("hex"));
+        if (formatedLicenceKeyToCheck === formatedGeneratedKey) {
+            return true;
+        }
+    
+        return false;
+    }
+    
+    // Read the data (cant be in a sepeate function as it could be overwritten even if obfuscated easily then)
+    var wmi = require('node-wmi');
+    wmi.Query(
+        {
+            class: 'Win32_BIOS'
+        }, function(err, bios) {
+            //console.log(bios);
+            var machinedata = bios[0]["Manufacturer"]+"."+bios[0]["SerialNumber"];
+    
+            var shasum = crypto.createHash('sha1');
+            shasum.update(machinedata);
+            var machinedatahash = shasum.digest('hex')
+    
+            console.log("using this machinedata: "+machinedata)
+            console.log("hashed machine data: ", machinedatahash)
+                
+            // comparing the licences
+            let scriptSecret = licenceKey + "::" + machinedata;
+            if (isLicenceValid(licenceKey, scriptName="PMKundenAPILicenceServer", scriptVersion="1", scriptSecret=scriptSecret) !== true) {
+                alert("Invalid licence");
+            }
+        }
+    );
+}
+
+const pathToLicenceDirectory = "LICENCEDATA";
+const pathToLicenceFile = pathToLicenceDirectory+"/key.txt";
+const pathToLicenceCertificteFile = pathToLicenceDirectory+"/certificate.txt";
+if (fs.existsSync(pathToLicenceFile) && fs.existsSync(pathToLicenceCertificteFile)) {
+    let licenceKey = fs.readFileSync();
+    let licenceCertificate = fs.readFileSync(pathToLicenceCertificteFile);
+
+    verifyLicence(licenceKey, licenceCertificate);
+} else {
+    alert("The licence could not be verified. In demo mode you can not save files.");
+    ipc.send("licence-setup-demo-mode");
+    shell.openExternal("LicenceClient/Licence Client.exe");
+}
+
+
+///////////////////////////////////////////////////
+// END: licence check
+///////////////////////////////////////////////////
+
+
 // Start: prevent links written in Markdown to fuck up the app instaed open in external browser
 function changeHTMLForPreviewTab(html) {
     return html;
 }
 
-var shell = require('electron').shell;
     // open links externally by default if they are displayed in the preview of the markdown editor tab (wuold fuck up the app if we didnt do this)
     $(document).on('click', '.te-preview a', function(event) {
         event.preventDefault();

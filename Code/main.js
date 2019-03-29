@@ -6,7 +6,13 @@ const WindowManager = require('./WindowManager');
 var sharedWindowManager = new WindowManager();
 
 let appIsReady = false;
+let appIsInDemoMode = false;
 let openFileAtPathWhenReady = null;
+
+
+function openSoftwareRegistrationApp() {
+  shell.openExternal("LicenceClient/Licence Client.exe");
+}
 
 function createStartupWindow() {
   sharedWindowManager.createWindow();
@@ -30,6 +36,8 @@ app.on('open-file', function(event, path) {
 // Some APIs can only be used after this event occurs.
 app.on('ready', function() {
   appIsReady = true;
+
+  openSoftwareRegistrationApp();
 
   if (openFileAtPathWhenReady == null) {
     // open default startup window
@@ -84,13 +92,37 @@ ipc.on('open-file-dialog', function (event) {
   })
 })
 
+function notifyUserFeatureNotAvailableInDemo() {
+  var options = {
+    type: 'info',
+    title: 'Demo Mode', // not shown on macOS
+    message: "Demo Mode",
+    detail: "This feature is not available in demo mode. Please register this software.",
+    //defaultId: 2,
+    buttons: ['Register Now', 'Later']
+  };
+
+  dialog.showMessageBox(options, function(choice) {
+    var buttonRegisterNow = 0;
+    var buttonRegisterLater = 1;
+
+    if (buttonRegisterNow) {
+      openSoftwareRegistrationApp();
+    }
+  });
+}
+
 ipc.on('save-dialog', function (event) {
   const options = {
     defaultPath: "Unnamed.md",
     filters: fileDialogFilters
   }
   dialog.showSaveDialog(options, function (filename) {
-    event.sender.send('saved-file', filename)
+    if (appIsInDemoMode) {
+      notifyUserFeatureNotAvailableInDemo();
+    } else {
+      event.sender.send('saved-file', filename)
+    }
   })
 })
 
@@ -143,3 +175,8 @@ ipc.on('update.available.notifyuser', function(event, message) {
 
 // End update code
 
+
+// Licence stuff
+ipc.on('licence-setup-demo-mode', function(event, message) {
+  appIsInDemoMode = true;
+});

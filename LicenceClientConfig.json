@@ -1,10 +1,10 @@
 {
     "support_email": "me@philipp-mayr.de",
-    "ui_product_name": "Licence Client Example Product",
-    "licence_key_storage_path": "../licencekey.txt",
-    "licence__certificate_storage_path": "../licencecertificate.txt",
+    "ui_product_name": "PM Markdown Editor",
+    "licence_key_storage_path": "../LICENCEDATA/key.txt",
+    "licence__certificate_storage_path": "../LICENCEDATA/certificate.txt",
     "activation_rpc_url": "https://philipp-mayr.de/kunden/api/licence.py",
     "activation_rpc_method": "activateLicenceByHash1",
-    "activation_rpc_method_product": "Licence Client Example Product",
+    "activation_rpc_method_product": "PM Markdown Editor",
     "activation_rpc_method_product_version": "1.0.0"
 }
