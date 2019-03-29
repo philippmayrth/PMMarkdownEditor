@@ -11,7 +11,13 @@ let openFileAtPathWhenReady = null;
 
 
 function openSoftwareRegistrationApp() {
-  shell.openExternal("LicenceClient/Licence Client.exe");
+  let pathToExecutable = "LicenceClient/Licence Client.exe";
+  
+  var execFile = require('child_process').execFile, child;
+
+  child = execFile(pathToExecutable, function(error,stdout,stderr) {
+
+  }); 
 }
 
 function createStartupWindow() {
