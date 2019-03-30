@@ -37,7 +37,9 @@ RequestExecutionLevel user
 ;Interface Settings
 
 !define MUI_ABORTWARNING
-!define MUI_FINISHPAGE_RUN "${APP_NAME}.exe"
+!define MUI_FINISHPAGE_RUN "PM Markdown Editor.exe"
+!define MUI_ICON "Artwork/WindowsAppIcon.ico"
+
 
 ;--------------------------------
 ;Pages
@@ -138,9 +140,9 @@ SetOutPath "$INSTDIR"
 File /nonfatal /r "Build/win32/${APP_NAME}\" ; keep backslash at the end to copy a directory
 
 ; add the licence client
-SetOutPath "$INSTDIR\LicenceClient"
 File /nonfatal "LicenceClientConfig.json"
-File /nonfatal /r "LicenceClient 1.1.0 Windows x32\" ; keep backslash at the end to copy a directory
+SetOutPath "$INSTDIR\LicenceClient"
+File /nonfatal /r "LicenceClient 1.1.0 Windows x32\LicenceClient\" ; keep backslash at the end to copy a directory
 
 ;Store installation folder
 WriteRegStr HKCU "Software\${APP_NAME}" "" $INSTDIR ; good for updates?
