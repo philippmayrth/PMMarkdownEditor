@@ -10,7 +10,7 @@
     "electron": "^4.1.1"
   },
   "dependencies": {
-    "jquery": "^3.3.1",
+    "jquery": "^3.4.0",
     "node-wmi": "0.0.5"
   }
 }
