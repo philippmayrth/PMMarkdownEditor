@@ -1,12 +1,14 @@
-# Markdown Editor
+# Source Code Licence
 
-New marketing idea: This app will be aviable in two versions on the Mac App Store. One lite version that can be upgraded with In-App Purchases and one Full version with all In-App purchases already integrated. This way we might be able to cover a broader customer range as well as see which features are used/paid/valued most.
+This is the source code for PM Markdown Editor as available for macOS and Widnows. You are free to open PRs however usage still falls under the same licence as the binary format and you will have to buy a copy of a binary to optian a licence.
 
 # Install
 
 - From the marketing Website https://www.philipp-mayr.de/apps/markdown-editor/ (macOS and Widnows availabe)
 - From the macOS App Store https://apps.apple.com/de/app/pm-markdown-editor/id1342359564?l=en&mt=12&ign-mpt=uo%3D4
 
+
+# Markdown Editor
 
 ### Relevant for first version (MVP)
 
