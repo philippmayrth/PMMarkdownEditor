@@ -7,7 +7,7 @@
     "start": "electron ."
   },
   "devDependencies": {
-    "electron": "^4.1.1"
+    "electron": "^11.5.0"
   },
   "dependencies": {
     "jquery": "^3.4.0",
